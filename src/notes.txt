@@ -1,0 +1,141 @@
+How do we decide what to turn into a component:
+Consider reusability:
+Consider what changes? If it changes, it's likely a good candidate for a component. If it does not change (static) then it probably is not.
+
+TWEET COMPONENT
+
+-Tweet
+	- ReplyButton
+	- RetweetButton
+	- LikeButton
+	- MoreOptions
+
+	// Regular function
+	function LikeButton() {
+	  return (
+	    <i className="fa fa-heart like-button" />
+	  );
+	}
+
+	// I can rewrite as an anonymous function
+	const LikeButton = function() {
+	  return (
+	    <i className="fa fa-heart like-button" />
+	  );
+	}
+
+	// ...that can be turned into and arrow function
+	const LikeButton = () => {
+	  return (
+	    <i className="fa fa-heart like-button" />
+	  );
+	}
+
+	// You can further simplify to this
+	const LikeButton = () => (
+	    <i className="fa fa-heart like-button" />
+	);
+
+	const LikeButton = () => <i className="fa fa-heart like-button" />;
+
+PROPS
+HTML Elements -> attributes
+React Components -> props (properties)
+
+React components can be written as function (Stateless Functional Components)
+
+We can pass arguments to functions.
+Props are the arguments to your components.
+
+Props flow from the parent to the child.
+NEVER, child to parent.
+
+Receiving Props
+
+// function Person(props) {
+// return <div className={props.className}>{props.name}</div>;
+// }
+
+// const Person = props => <span>Hello, {props.name}</span>;
+
+// const Person = ({ name, className }) => <span className={className}>Hello, {name}</span>;
+
+// const Person = props => {
+//   const { className, name } = props;
+//   return <span className={className}>Hello, {name}</span>;
+// };
+
+Props flow from the parent to the child ALWAYS
+The child passes data or communicates with the parent via functions passed down as props from the parent.
+
+Props flow down, functions flow up...
+
+One way data binding.
+
+function handleAction(event) {
+  console.log('Child did: ', event);
+}
+
+function Parent() {
+  return <Child onAction={handleAction} />;
+}
+
+function Child({ onAction }) {
+  return <button onClick={onAction} />;
+}
+
+var testTweet = {
+  message: 'Something about dogs.',
+  gravatar: 'xyz',
+  author: {
+    handle: 'dogperson',
+    name: 'IAMA Dog Person'
+  },
+  likes: 2,
+  retweets: 17,
+  timeStamp: '2017-10-11 13:24:17'
+};
+
+const Time = ({ tweet }) => {
+  const timeString = moment(tweet.timestamp).fromNow();
+  return <span className="time">{timeString}</span>;
+};
+
+PropTypes
+import PropTypes from 'prop-types';
+
+function Comment({author, message, likes}) {
+	return (
+		<div>
+		 <div className='author'>{author}</div>
+		 <div className='message'>{message}</div>
+		 <div className='likes'>
+		 	 {likes > 0 ? likes : 'No '} likes
+		 </div>
+		</div>
+	);
+}
+
+Comment.propTypes = {
+	message: PropTypes.string.isRequired,
+	author: PropTypes.string.isRequired,
+	likes: PropTypes.number
+}
+
+PropTypes.array
+PropTypes.bool
+PropTypes.func
+PropTypes.number
+PropTypes.object
+PropTypes.string
+
+const person = {
+	name: 'Joe',
+	age: 27
+}
+
+PropTypes.shape({
+	name: PropTypes.string,
+	age: PropTypes.number
+})
+
